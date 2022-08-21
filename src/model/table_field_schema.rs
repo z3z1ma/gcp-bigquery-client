@@ -106,7 +106,7 @@ impl TableFieldSchema {
             mode: None,
             name: field_name.into(),
             policy_tags: None,
-            r#type: FieldType::JSON,
+            r#type: FieldType::Json,
         }
     }
 
