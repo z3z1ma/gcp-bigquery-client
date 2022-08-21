@@ -253,6 +253,18 @@ impl DatasetApi {
         process_response(response).await
     }
 
+    /// Checks whether specified dataset resource by dataset ID in "project_id" exists.
+    /// # Arguments
+    /// * `project_id` - Project ID of the requested dataset
+    /// * `dataset_id` - Dataset ID of the requested dataset
+    pub async fn exists(&self, project_id: &str, dataset_id: &str) -> Result<bool, BQError> {
+        match self.get(project_id, dataset_id).await {
+            Ok(_t) => Ok(true),
+            Err(BQError::ResponseError { error }) if error.error.code == 404 => Ok(false),
+            Err(e) => Err(e),
+        }
+    }
+
     /// Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the
     /// patch method only replaces fields that are provided in the submitted dataset resource. This method supports
     /// patch semantics.

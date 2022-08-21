@@ -132,6 +132,19 @@ impl TableApi {
         process_response(response).await
     }
 
+    /// Checks whether specified table resource by table ID in "dataset_id" exists.
+    /// # Arguments
+    /// * project_id - Project ID of the table to delete
+    /// * dataset_id - Dataset ID of the table to delete
+    /// * table_id - Table ID of the table to delete
+    pub async fn exists(&self, project_id: &str, dataset_id: &str, table_id: &str) -> Result<bool, BQError> {
+        match self.get(project_id, dataset_id, table_id, None).await {
+            Ok(_t) => Ok(true),
+            Err(BQError::ResponseError { error }) if error.error.code == 404 => Ok(false),
+            Err(e) => Err(e),
+        }
+    }
+
     /// Lists all tables in the specified dataset. Requires the READER dataset role.
     /// # Arguments
     /// * project_id - Project ID of the table to delete
