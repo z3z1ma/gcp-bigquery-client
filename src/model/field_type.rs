@@ -19,5 +19,5 @@ pub enum FieldType {
     Datetime,
     Record, // where RECORD indicates that the field contains a nested schema
     Struct, // same as RECORD
-    JSON,   // unstructured
+    Json,   // unstructured
 }
