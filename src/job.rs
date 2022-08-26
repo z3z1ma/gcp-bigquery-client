@@ -404,7 +404,7 @@ mod test {
 
         let result = client
             .tabledata()
-            .insert_all(project_id, dataset_id, table_id, insert_request)
+            .insert_all(project_id, dataset_id, table_id, &insert_request)
             .await;
 
         assert!(result.is_ok(), "{:?}", result);

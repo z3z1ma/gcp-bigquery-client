@@ -31,7 +31,7 @@ impl TableDataApi {
         project_id: &str,
         dataset_id: &str,
         table_id: &str,
-        insert_request: TableDataInsertAllRequest,
+        insert_request: &TableDataInsertAllRequest,
     ) -> Result<TableDataInsertAllResponse, BQError> {
         let req_url = format!("https://bigquery.googleapis.com/bigquery/v2/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}/insertAll", project_id=urlencode(project_id), dataset_id=urlencode(dataset_id), table_id=urlencode(table_id));
 
@@ -41,7 +41,7 @@ impl TableDataApi {
             .client
             .post(req_url.as_str())
             .bearer_auth(access_token)
-            .json(&insert_request)
+            .json(insert_request)
             .build()?;
 
         let resp = self.client.execute(request).await?;
@@ -160,7 +160,7 @@ mod test {
 
         let result = client
             .tabledata()
-            .insert_all(project_id, dataset_id, table_id, insert_request)
+            .insert_all(project_id, dataset_id, table_id, &insert_request)
             .await;
         assert!(result.is_ok(), "Error: {:?}", result);
 
