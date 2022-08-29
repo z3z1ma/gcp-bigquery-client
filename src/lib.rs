@@ -67,7 +67,18 @@ impl Client {
             .await
             .expect("expecting a valid key");
 
-        let client = reqwest::Client::new();
+        let client = reqwest::Client::builder()
+            .http2_adaptive_window(true)
+            .http2_keep_alive_interval(std::time::Duration::from_secs(15))
+            .http2_keep_alive_timeout(std::time::Duration::from_secs(30))
+            .http2_keep_alive_while_idle(true)
+            .http2_prior_knowledge()
+            .pool_idle_timeout(None)
+            .pool_max_idle_per_host(100)
+            .tcp_keepalive(std::time::Duration::from_secs(60))
+            .user_agent("rust-bq-client")
+            .build()
+            .unwrap();
         Self {
             dataset_api: DatasetApi::new(client.clone(), sa_auth.clone()),
             table_api: TableApi::new(client.clone(), sa_auth.clone()),
@@ -93,7 +104,18 @@ impl Client {
         };
         let sa_auth = ServiceAccountAuthenticator::from_service_account_key(sa_key, &scopes).await?;
 
-        let client = reqwest::Client::new();
+        let client = reqwest::Client::builder()
+            .http2_adaptive_window(true)
+            .http2_keep_alive_interval(std::time::Duration::from_secs(15))
+            .http2_keep_alive_timeout(std::time::Duration::from_secs(30))
+            .http2_keep_alive_while_idle(true)
+            .http2_prior_knowledge()
+            .pool_idle_timeout(None)
+            .pool_max_idle_per_host(100)
+            .tcp_keepalive(std::time::Duration::from_secs(60))
+            .user_agent("rust-bq-client")
+            .build()
+            .unwrap();
         Ok(Self {
             dataset_api: DatasetApi::new(client.clone(), sa_auth.clone()),
             table_api: TableApi::new(client.clone(), sa_auth.clone()),
@@ -114,7 +136,18 @@ impl Client {
 
         let sa_auth = ServiceAccountAuthenticator::with_workload_identity(&scopes).await?;
 
-        let client = reqwest::Client::new();
+        let client = reqwest::Client::builder()
+            .http2_adaptive_window(true)
+            .http2_keep_alive_interval(std::time::Duration::from_secs(15))
+            .http2_keep_alive_timeout(std::time::Duration::from_secs(30))
+            .http2_keep_alive_while_idle(true)
+            .http2_prior_knowledge()
+            .pool_idle_timeout(None)
+            .pool_max_idle_per_host(100)
+            .tcp_keepalive(std::time::Duration::from_secs(60))
+            .user_agent("rust-bq-client")
+            .build()
+            .unwrap();
         Ok(Self {
             dataset_api: DatasetApi::new(client.clone(), sa_auth.clone()),
             table_api: TableApi::new(client.clone(), sa_auth.clone()),
